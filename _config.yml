@@ -8,7 +8,8 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-site_theme               : "jekyll-theme-minimal"
+site_theme               : "Default"
+theme                    : "jekyll-theme-minimal"
 title                    : "Your Name / Site Title"
 title_separator          : "-"
 name                     : &name "Your Name"
