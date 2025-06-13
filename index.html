@@ -6,7 +6,7 @@
   <title>Vidhi Sehrawat | PhD Candidate in Biomedical Sciences</title>
   <style>
     :root {
-      --yellow: #fff176; /* banana yellow */
+      --yellow: #fff176;
       --white: #ffffff;
       --text: #111;
       --highlight: #f7c948;
@@ -100,6 +100,40 @@
       background-color: #fefcbf;
       padding: 0.3rem;
     }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      margin: 5% auto;
+      padding: 2rem;
+      width: 90%;
+      max-width: 700px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-top: -1rem;
+    }
+
+    .map {
+      max-width: 100%;
+      border: none;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -130,7 +164,6 @@
     <section id="cv">
       <h2>CV</h2>
       <p>Download my full <a href="files/vidhi_cv.pdf" target="_blank">Curriculum Vitae (PDF) (coming soon)</a>.</p>
-      <p>Highlights:</p>
       <ul>
         <li>Project 1</li>
         <li>Project 2</li>
@@ -150,9 +183,27 @@
     <section id="mentoring">
       <h2>Mentoring & Teaching</h2>
       <p>
-        For the past 6+ years, I have been mentoring early-career researchers and students on grad school applications, interview preparation, scientific communication, and academic growth. If you're a student looking to develop a career in science with proper guidance, I’d love to connect.
+        For the past 6+ years, I have been mentoring early-career researchers and students on grad school applications, interview preparation, scientific communication, and academic growth. If you're a student looking to develop a career in science with proper <span style="color: blue; cursor: pointer; text-decoration: underline;" onclick="document.getElementById('menteeMap').style.display='block';">guidance</span>, I’d love to connect.
       </p>
     </section>
+
+    <div id="menteeMap" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="document.getElementById('menteeMap').style.display='none';">&times;</span>
+        <h3>Where My Mentees Are</h3>
+        <p>Some of the universities and countries where I’ve had the joy of mentoring students:</p>
+        <ul style="text-align: left;">
+          <li>University of Warsaw, Poland</li>
+          <li>IIT Madras, India</li>
+          <li>University of Oxford, UK</li>
+          <li>National University of Singapore</li>
+          <li>ETH Zurich, Switzerland</li>
+          <li>Karolinska Institute, Sweden</li>
+          <li>University of Cape Town, South Africa</li>
+        </ul>
+        <iframe class="map" src="https://www.google.com/maps/d/u/0/embed?mid=1OoyWJuTL43nkeLj2cFc1dOx4YK5RVjQ&ehbc=2E312F" height="480"></iframe>
+      </div>
+    </div>
 
     <section id="contact">
       <h2>Contact</h2>
