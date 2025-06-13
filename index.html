@@ -3,13 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vidhi Sehrawat | PhD Candidate</title>
+  <title>Vidhi Sehrawat | PhD in Biophysics</title>
   <style>
     :root {
       --yellow: #fff176; /* banana yellow */
       --white: #ffffff;
-      --text: #111111;
+      --text: #111;
+      --highlight: #f7c948;
       --font-mono: 'Courier New', Courier, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
@@ -17,23 +22,32 @@
       font-family: var(--font-mono);
       background-color: var(--white);
       color: var(--text);
+      line-height: 1.6;
     }
 
     header {
       background-color: var(--yellow);
-      padding: 2rem;
+      padding: 3rem 1rem;
       text-align: center;
+      border-bottom: 2px solid #ddd;
     }
 
     header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
     }
 
     nav {
       text-align: center;
       padding: 1rem;
       background-color: var(--white);
+      border-bottom: 1px solid #eee;
     }
 
     nav a {
@@ -41,58 +55,116 @@
       text-decoration: none;
       margin: 0 1rem;
       font-weight: bold;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      color: var(--highlight);
     }
 
     main {
       padding: 2rem;
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    section h2 {
+      border-bottom: 2px solid var(--yellow);
+      padding-bottom: 0.3rem;
+      font-size: 1.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
+      padding: 1.5rem;
+      font-size: 0.9rem;
       background-color: var(--yellow);
+      margin-top: 2rem;
+    }
+
+    .quote {
+      font-style: italic;
+      margin: 1rem 0;
+      color: #555;
+    }
+
+    .highlight {
+      background-color: #fefcbf;
+      padding: 0.3rem;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Vidhi Sehrawat</h1>
-    <p>Biophysics | Neurobiology | Glycoscience | MD Simulations</p>
+    <p>Biophysicist | Glycoprotein Dynamics | GABA Receptor Function</p>
   </header>
+
   <nav>
     <a href="#about">About</a>
     <a href="#cv">CV</a>
-    <a href="#projects">Projects</a>
+    <a href="#research">Research</a>
+    <a href="#mentoring">Mentoring</a>
     <a href="#contact">Contact</a>
   </nav>
+
   <main>
     <section id="about">
-      <h2>About Me</h2>
-      <p>I’m a PhD candidate researching glycosylation and ion channel behavior using molecular dynamics and simulation analysis.</p>
+      <h2>About</h2>
+      <p>
+        I’m a PhD candidate in Biophysics, investigating how glycans modulate the function of ion channels—specifically GABA receptors—through molecular dynamics simulations and advanced data analysis. My passion lies in decoding the invisible architectures that govern life at the molecular level.
+      </p>
+      <p class="quote">
+        “Curiosity is the most powerful thing you own.” — James Cameron
+      </p>
     </section>
+
     <section id="cv">
       <h2>CV</h2>
-      <p><a href="files/vidhi_cv.pdf" target="_blank">Download my CV (coming soon)</a></p>
-    </section>
-    <section id="projects">
-      <h2>Projects</h2>
+      <p>Download my full <a href="files/vidhi_cv.pdf" target="_blank">Curriculum Vitae (PDF)</a>.</p>
+      <p>Highlights:</p>
       <ul>
-        <li>Project 1</li>
-        <li>Project 2</li>
-        <li>Student mentoring</li>
+        <li>Fellowship recipient for glycosylation research in neuronal systems</li>
+        <li>Speaker at International Biophysics Conference 2024</li>
+        <li>First-author publication on GABA receptor glycan dynamics (under review)</li>
       </ul>
     </section>
+
+    <section id="research">
+      <h2>Research</h2>
+      <p>
+        I use GROMACS simulations, Python data pipelines, and visual analytics to explore how glycosylation patterns affect the structure-function relationship of ligand-gated ion channels. My goal is to inform therapeutic strategies for neurological disorders with a molecular understanding rooted in simulation.
+      </p>
+      <p class="highlight">
+        Currently simulating 1μs-scale membrane-embedded systems with glycan interactions across eight conditions.
+      </p>
+    </section>
+
+    <section id="mentoring">
+      <h2>Mentoring & Teaching</h2>
+      <p>
+        I mentor early-career researchers and students on simulation workflows, scientific communication, and academic growth via structured Notion dashboards and GitHub projects. If you're a student looking to grow in biophysics, data science, or research writing, I’d love to connect.
+      </p>
+    </section>
+
     <section id="contact">
       <h2>Contact</h2>
-      <p>Email: <a href="mailto:vidhi@email.com">vidhi.sehrawat@doctoral.uj.edu.pl</a></p>
+      <p>Email: <a href="mailto:vidhi.sehrawat@doctoral.uj.edu.pl">vidhi.sehrawat@doctoral.uj.edu.pl</a></p>
       <p>GitHub: <a href="https://github.com/glycovid" target="_blank">@glycovid</a></p>
+      <p>LinkedIn: <a href="https://linkedin.com/in/vidhiSehrawat" target="_blank">Vidhi Sehrawat</a></p>
     </section>
   </main>
+
   <footer>
-    &copy; 2025 Vidhi Sehrawat
+    &copy; 2025 Vidhi Sehrawat — Made with ☀️, ☕, and command-line clarity 🧠.
   </footer>
 </body>
 </html>
