@@ -110,6 +110,7 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
       z-index: 1000;
+      overflow: auto; /* to allow scrolling if modal is too tall */
     }
 
     .modal-content {
@@ -120,20 +121,56 @@
       max-width: 700px;
       border-radius: 10px;
       text-align: center;
+      position: relative;
     }
 
     .close {
-      float: right;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       font-size: 1.5rem;
       cursor: pointer;
-      margin-top: -1rem;
+      user-select: none;
     }
 
-    .map {
-      max-width: 100%;
-      border: none;
+    /* Scrollable container for the mentee list */
+    .modalContentScroll {
+      max-height: 50vh;
+      overflow-y: auto;
+      margin-top: 1rem;
+      padding-right: 10px; /* space for scrollbar */
+      text-align: left;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #fafafa;
+    }
+
+    .modalContentScroll ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      list-style-type: disc;
+    }
+
+    /* World map container styling */
+    #worldMap {
+      width: 100%;
+      height: 400px;
       margin-top: 1rem;
     }
+
+    /* Tooltip for dots */
+    .tooltip {
+      position: absolute;
+      padding: 4px 8px;
+      background: #333;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease-in-out;
+    }
+
   </style>
 </head>
 <body>
@@ -177,63 +214,234 @@
         I use GROMACS simulations, Python data pipelines, and visual analytics to explore how glycosylation affect ligand-gated ion channels. My goal is to inform therapeutic strategies for neurological disorders with a molecular understanding rooted in simulation.
       </p>
       <p class="highlight">
-        My research is supported by Dioscuri, a programme initiated by the Max Planck Society, jointly managed with the National Science Centre in Poland, and mutually funded by the Polish Ministry of Education and Science and the German Federal Ministry of Education and Research (BMBF).</p>
+        My research is supported by Dioscuri, a programme initiated by the Max Planck Society, jointly managed with the National Science Centre in Poland, and mutually funded by the Polish Ministry of Education and Science and the German Federal Ministry of Education and Research (BMBF).
+      </p>
     </section>
 
     <section id="mentoring">
       <h2>Mentoring & Teaching</h2>
       <p>
-        For the past 6+ years, I have been mentoring early-career researchers and students on grad school applications, interview preparation, scientific communication, and academic growth. If you're a student looking to develop a career in science with proper <span style="color: blue; cursor: pointer; text-decoration: underline;" onclick="document.getElementById('menteeMap').style.display='block';">guidance</span>, I’d love to connect.
+        For the past 6+ years, I have been mentoring early-career researchers and students on grad school applications, interview preparation, scientific communication, and academic growth. If you're a student looking to develop a career in science with proper 
+        <span style="color: blue; cursor: pointer; text-decoration: underline;" id="openModalBtn">guidance</span>, I’d love to connect.
       </p>
     </section>
 
-    <div id="menteeMap" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="document.getElementById('menteeMap').style.display='none';">&times;</span>
-        <h3>Where My Mentees Are</h3>
+    <!-- Modal for mentee map and list -->
+    <div id="menteeMap" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+      <div class="modal-content" role="document">
+        <span class="close" id="closeModalBtn" aria-label="Close modal">&times;</span>
+        <h2 id="modalTitle">Where My Mentees Are</h2>
         <p>Some of the universities and countries where I’ve had the joy of mentoring students:</p>
-        <ul style="text-align: left;">
-          <li>Academia Sinica, Taiwan</li>
-          <li>Adam Mickiewicz University, Poland</li>
-          <li>Campus Biotech, Switzerland</li>
-          <li>Cleveland State University, USA</li>
-          <li>ESSEC Business School, France</li>
-          <li>ETH Zurich, Switzerland</li>
-          <li>Geneva Graduate Institute, Switzerland</li>
-          <li>Indian Institute of Technology Palakkad, India</li>
-          <li>INSERM, France</li>
-          <li>Jagiellonian University, Poland</li>
-          <li>KEDGE Business School, France</li>
-          <li>KTH Royal Institute of Technology, Sweden</li>
-          <li>Stockholm University, Sweden</li>
-          <li>University of Amsterdam, The Netherlands</li>
-          <li>University of Barcelona, Spain</li>
-          <li>University of Coimbra,  Portugal</li>
-          <li>University of Bologna, Italy</li>
-          <li>University of Genoa, Italy</li>
-          <li>University of Glasgow, UK</li>
-          <li>University of Grenoble Alpes, France</li>
-          <li>Université Paris-Saclay, France</li>
-          <li>University of Porto, Portugal</li>
-          <li>University of Sussex, UK</li>
-          <li>University of Valencia, Italy</li>
-          <li>University of Wisconsin-Madison, USA</li>
-          <li>University of Warsaw, Poland</li>
-        </ul>
-        <iframe class="map" src="https://www.google.com/maps/d/u/0/embed?mid=1OoyWJuTL43nkeLj2cFc1dOx4YK5RVjQ&ehbc=2E312F" height="480"></iframe>
+
+        <div id="worldMap"></div>
+
+        <div class="modalContentScroll" tabindex="0" aria-label="List of mentee countries">
+          <ul id="countryList">
+            <!-- Country list with counts will be populated by JS -->
+          </ul>
+        </div>
       </div>
     </div>
 
     <section id="contact">
       <h2>Contact</h2>
       <p>Email: <a href="mailto:vidhi.sehrawat@doctoral.uj.edu.pl">vidhi.sehrawat@doctoral.uj.edu.pl</a></p>
-      <p>GitHub: <a href="https://github.com/glycovid" target="_blank">@glycovid</a></p>
-      <p>LinkedIn: <a href="https://www.linkedin.com/in/vidhi-sehrawat/" target="_blank">Vidhi Sehrawat</a></p>
+      <p>GitHub: <a href="https://github.com/glycovid" target="_blank" rel="noopener">@glycovid</a></p>
+      <p>LinkedIn: <a href="https://www.linkedin.com/in/vidhi-sehrawat/" target="_blank" rel="noopener">Vidhi Sehrawat</a></p>
     </section>
   </main>
 
   <footer>
     &copy; 2025 Vidhi Sehrawat — Made with ☀️, ☕, and command-line clarity 🧠.
   </footer>
+
+  <!-- D3.js for world map and interactive dots -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+    // Data: mentee counts per country (ISO 3166-1 alpha-2 code : count)
+    const menteeData = {
+      "TW": 1,
+      "PL": 4,
+      "CH": 3,
+      "US": 2,
+      "FR": 5,
+      "IN": 6,
+      "IT": 3,
+      "ES": 1,
+      "PT": 2,
+      "UK": 2,
+      "SE": 2,
+      "DE": 3
+      // Add more country codes and counts if needed
+    };
+
+    // Mapping of country codes to country names (for tooltips and list)
+    const countryNames = {
+      "TW": "Taiwan",
+      "PL": "Poland",
+      "CH": "Switzerland",
+      "US": "USA",
+      "FR": "France",
+      "IN": "India",
+      "IT": "Italy",
+      "ES": "Spain",
+      "PT": "Portugal",
+      "UK": "United Kingdom",
+      "SE": "Sweden",
+      "DE": "Germany"
+    };
+
+    // Modal open/close logic
+    const modal = document.getElementById('menteeMap');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+      // Focus on the scrollable list for accessibility
+      document.querySelector('.modalContentScroll').focus();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+      openBtn.focus();
+    });
+
+    // Close modal if clicked outside content
+    window.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        openBtn.focus();
+      }
+    });
+
+    // Populate country list in modal with counts
+    const countryList = document.getElementById('countryList');
+    Object.entries(menteeData)
+      .sort((a,b) => b[1] - a[1]) // Sort descending by count
+      .forEach(([code, count]) => {
+        const li = document.createElement('li');
+        li.textContent = `${countryNames[code] || code} (${count} mentee${count > 1 ? 's' : ''})`;
+        countryList.appendChild(li);
+      });
+
+    // Dimensions for the SVG map
+    const width = document.getElementById('worldMap').clientWidth;
+    const height = 400;
+
+    // Create SVG element
+    const svg = d3.select('#worldMap')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    // Tooltip div for showing country and count on hover
+    const tooltip = d3.select('body').append('div')
+      .attr('class', 'tooltip');
+
+    // Projection and path for world map
+    const projection = d3.geoNaturalEarth1()
+      .scale(width / 1.3 / Math.PI)
+      .translate([width / 2, height / 2]);
+
+    const path = d3.geoPath().projection(projection);
+
+    // Load and render world map
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(worldData => {
+      const countries = topojson.feature(worldData, worldData.objects.countries).features;
+
+      // Draw countries
+      svg.selectAll('path')
+        .data(countries)
+        .enter()
+        .append('path')
+        .attr('d', path)
+        .attr('fill', '#f0f0f0')
+        .attr('stroke', '#999');
+
+      // Plot mentee dots
+      // For each country code in menteeData, find centroid and plot circle scaled by mentee count
+
+      // We'll use a helper to map country code to numeric id for matching topojson country ids
+      // country code to ISO numeric code mapping (partial for the used countries)
+      const countryCodeToId = {
+        "TW": 158,
+        "PL": 616,
+        "CH": 756,
+        "US": 840,
+        "FR": 250,
+        "IN": 356,
+        "IT": 380,
+        "ES": 724,
+        "PT": 620,
+        "UK": 826,
+        "SE": 752,
+        "DE": 276
+      };
+
+      // Filter topojson features for only the countries we have data for
+      const menteeCountries = countries.filter(d => {
+        return Object.values(countryCodeToId).includes(d.id);
+      });
+
+      // Create a scale for circle radius
+      const maxCount = Math.max(...Object.values(menteeData));
+      const radiusScale = d3.scaleSqrt()
+        .domain([0, maxCount])
+        .range([0, 20]);
+
+      // Map country id to mentee count
+      const idToCount = {};
+      for (const [code, count] of Object.entries(menteeData)) {
+        const id = countryCodeToId[code];
+        if (id) idToCount[id] = count;
+      }
+
+      svg.selectAll('circle')
+        .data(menteeCountries)
+        .enter()
+        .append('circle')
+        .attr('cx', d => {
+          const centroid = path.centroid(d);
+          return centroid[0];
+        })
+        .attr('cy', d => {
+          const centroid = path.centroid(d);
+          return centroid[1];
+        })
+        .attr('r', d => radiusScale(idToCount[d.id] || 0))
+        .attr('fill', '#f7c948')
+        .attr('stroke', '#333')
+        .attr('stroke-width', 1)
+        .attr('cursor', 'pointer')
+        .on('mouseenter', function(event, d) {
+          const count = idToCount[d.id] || 0;
+          const countryName = Object.entries(countryCodeToId).find(([code, id]) => id === d.id)?.[0] || d.id;
+          tooltip.style('opacity', 1)
+            .html(`<strong>${countryNames[countryName] || countryName}</strong><br>${count} mentee${count > 1 ? 's' : ''}`)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 28) + 'px');
+        })
+        .on('mousemove', function(event) {
+          tooltip.style('left', (event.pageX + 10) + 'px')
+                 .style('top', (event.pageY - 28) + 'px');
+        })
+        .on('mouseleave', () => {
+          tooltip.style('opacity', 0);
+        });
+
+    }).catch(err => {
+      console.error('Error loading map data:', err);
+      document.getElementById('worldMap').textContent = 'Failed to load world map.';
+    });
+
+  </script>
+
+  <!-- Include topojson library for map projection support -->
+  <script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
 </body>
 </html>
